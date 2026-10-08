@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AtmoBake — Horneados perfectos a cualquier altitud</title>
+  <meta name="description" content="AtmoBake ajusta tus recetas de panadería y repostería según la altitud, la humedad y la presión atmosférica para lograr horneados perfectos." />
+  <meta name="theme-color" content="#d97706" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="AtmoBake — Horneados perfectos a cualquier altitud" />
+  <meta property="og:description" content="Ajusta hidratación, levadura y fermentación según las variables ambientales de tu cocina." />
+
+  <!-- Favicon inline -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23d97706'/%3E%3Cpath d='M10 46 26 22l8 11 6-7 14 20z' fill='%23fdfaf3'/%3E%3Ccircle cx='46' cy='16' r='5' fill='%23fde68a'/%3E%3C/svg%3E" />
+
+  <!-- Tipografías -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS vía CDN -->
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            // Paleta panadería artesanal: trigo, ámbar (nativo de Tailwind) y carbón
+            wheat: {
+              50: "#fdfaf3", 100: "#f8f0dc", 200: "#f0dfb6", 300: "#e6c98a",
+              400: "#d9b066", 500: "#c9974a", 600: "#a97a38", 700: "#85602f",
+              800: "#6a4d2a", 900: "#573f25"
+            },
+            charcoal: {
+              50: "#f6f6f5", 100: "#e7e6e3", 200: "#d1cfca", 300: "#b0ada5",
+              400: "#8a867c", 500: "#6e6a61", 600: "#57544d", 700: "#45423d",
+              800: "#2f2d2a", 900: "#1f1d1b", 950: "#141312"
+            }
+          },
+          fontFamily: {
+            display: ["Fraunces", "Georgia", "serif"],
+            sans: ["DM Sans", "system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"]
+          },
+          keyframes: {
+            float: { "0%,100%": { transform: "translateY(0)" }, "50%": { transform: "translateY(-10px)" } },
+            pop:   { "0%": { opacity: "0", transform: "translateY(8px) scale(.98)" }, "100%": { opacity: "1", transform: "none" } }
+          },
+          animation: {
+            float: "float 6s ease-in-out infinite",
+            pop: "pop .35s ease-out both"
+          }
+        }
+      }
+    };
+  </script>
+</head>
+
+<body class="bg-wheat-50 font-sans text-charcoal-800 antialiased selection:bg-amber-200">
+
+  <a href="#contenido"
+     class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-amber-600 focus:px-4 focus:py-2 focus:text-white">
+    Saltar al contenido
+  </a>
+
+  <!-- ===================================================== -->
+  <!-- HEADER                                                 -->
+  <!-- ===================================================== -->
+  <header class="sticky top-0 z-40 border-b border-wheat-200/70 bg-wheat-50/85 backdrop-blur-md">
+    <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <a href="#" class="flex items-center gap-2.5 font-display text-xl font-bold text-charcoal-900" aria-label="AtmoBake, inicio">
+        <svg class="h-9 w-9" viewBox="0 0 64 64" aria-hidden="true">
+          <rect width="64" height="64" rx="16" fill="#d97706" />
+          <path d="M10 46 26 22l8 11 6-7 14 20z" fill="#fdfaf3" />
+          <circle cx="46" cy="16" r="5" fill="#fde68a" />
+        </svg>
+        AtmoBake
+      </a>
+
+      <!-- Botón menú (solo móvil) -->
+      <button id="menuBtn" type="button"
+              class="grid h-11 w-11 place-items-center rounded-full border border-wheat-200 bg-white text-charcoal-800 md:hidden"
+              aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+
+      <!-- Navegación -->
+      <nav id="mainNav" aria-label="Principal"
+           class="absolute inset-x-0 top-16 hidden border-b border-wheat-200 bg-wheat-50 px-4 pb-4 md:static md:block md:border-0 md:bg-transparent md:p-0">
+        <ul class="flex flex-col md:flex-row md:items-center md:gap-8">
+          <li><a href="#beneficios" class="block border-b border-wheat-200 py-3 font-medium text-charcoal-600 hover:text-charcoal-900 md:border-0 md:py-0">Beneficios</a></li>
+          <li><a href="#demo" class="block border-b border-wheat-200 py-3 font-medium text-charcoal-600 hover:text-charcoal-900 md:border-0 md:py-0">Demo</a></li>
+          <li class="pt-4 md:pt-0">
+            <a href="#demo" class="inline-flex w-full items-center justify-center rounded-full bg-charcoal-900 px-5 py-2.5 font-bold text-wheat-50 transition hover:bg-charcoal-700 md:w-auto">
+              Probar gratis
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+
+    <!-- ===================================================== -->
+    <!-- HERO                                                   -->
+    <!-- ===================================================== -->
+    <section aria-labelledby="hero-title" class="relative overflow-hidden">
+      <!-- Brillo decorativo -->
+      <div class="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-amber-200/50 blur-3xl" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute -left-32 top-40 h-72 w-72 rounded-full bg-wheat-200/70 blur-3xl" aria-hidden="true"></div>
+
+      <div class="relative mx-auto grid max-w-6xl items-center gap-12 px-4 pb-8 pt-12 sm:px-6 sm:pt-16 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:pt-24">
+        <div class="text-center lg:text-left">
+          <p class="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-amber-700">
+            <span class="h-2 w-2 rounded-full bg-amber-500" aria-hidden="true"></span>
+            Panadería de precisión
+          </p>
+
+          <h1 id="hero-title" class="font-display text-4xl font-bold leading-[1.08] tracking-tight text-charcoal-900 sm:text-5xl lg:text-6xl">
+            La atmósfera cambia tu masa.
+            <span class="block text-amber-600">AtmoBake la domina.</span>
+          </h1>
+
+          <p class="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-charcoal-600 sm:text-xl lg:mx-0">
+            AtmoBake ajusta tus recetas a las <strong class="font-bold text-charcoal-800">variables ambientales</strong> de tu cocina
+            (altitud, humedad y presión atmosférica) para que cada pan y cada pastel salgan perfectos, estés donde estés.
+          </p>
+
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center lg:justify-start">
+            <a href="#demo" class="inline-flex items-center justify-center rounded-full bg-amber-600 px-7 py-4 font-bold text-white shadow-lg shadow-amber-600/25 transition hover:-translate-y-0.5 hover:bg-amber-700">
+              Ajustar mi receta
+            </a>
+            <a href="#beneficios" class="inline-flex items-center justify-center rounded-full border-2 border-wheat-300 px-7 py-4 font-bold text-charcoal-800 transition hover:border-amber-500">
+              Ver beneficios
+            </a>
+          </div>
+
+          <ul class="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-charcoal-500 lg:justify-start">
+            <li class="flex items-center gap-2">
+              <svg class="h-4 w-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>
+              Basado en física real
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="h-4 w-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>
+              De 0 a 4.000 m
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="h-4 w-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>
+              Pan y repostería
+            </li>
+          </ul>
+        </div>
+
+        <!-- Mockup decorativo -->
+        <figure class="mx-auto w-full max-w-xs motion-safe:animate-float" aria-label="Vista previa de la app AtmoBake">
+          <div class="rounded-[2.25rem] border border-wheat-200 bg-white p-3 shadow-2xl shadow-wheat-800/15">
+            <div class="rounded-[1.75rem] bg-wheat-100 p-5">
+              <div class="mx-auto mb-5 h-1.5 w-20 rounded-full bg-wheat-300" aria-hidden="true"></div>
+              <p class="text-xs font-bold uppercase tracking-wider text-charcoal-500">Tu cocina hoy</p>
+              <p class="font-display text-2xl font-bold text-charcoal-900">Bogotá · 2.640 m</p>
+
+              <dl class="mt-4 grid grid-cols-3 gap-2 text-center">
+                <div class="rounded-xl border border-wheat-200 bg-white px-1 py-2">
+                  <dt class="text-[0.68rem] text-charcoal-500">Presión</dt>
+                  <dd class="font-bold tabular-nums text-charcoal-900">743 hPa</dd>
+                </div>
+                <div class="rounded-xl border border-wheat-200 bg-white px-1 py-2">
+                  <dt class="text-[0.68rem] text-charcoal-500">Humedad</dt>
+                  <dd class="font-bold tabular-nums text-charcoal-900">72%</dd>
+                </div>
+                <div class="rounded-xl border border-wheat-200 bg-white px-1 py-2">
+                  <dt class="text-[0.68rem] text-charcoal-500">Ebullición</dt>
+                  <dd class="font-bold tabular-nums text-charcoal-900">91 °C</dd>
+                </div>
+              </dl>
+
+              <ul class="mt-4 space-y-2 text-sm">
+                <li class="flex items-center justify-between rounded-xl border border-wheat-200 bg-white px-3 py-2.5">
+                  Levadura <span class="rounded-full bg-red-50 px-2.5 py-0.5 font-bold tabular-nums text-red-700">−20%</span>
+                </li>
+                <li class="flex items-center justify-between rounded-xl border border-wheat-200 bg-white px-3 py-2.5">
+                  Agua <span class="rounded-full bg-emerald-50 px-2.5 py-0.5 font-bold tabular-nums text-emerald-700">+12%</span>
+                </li>
+                <li class="flex items-center justify-between rounded-xl border border-wheat-200 bg-white px-3 py-2.5">
+                  Horno <span class="rounded-full bg-amber-50 px-2.5 py-0.5 font-bold tabular-nums text-amber-700">+14 °C</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </figure>
+      </div>
+
+      <!-- Silueta de montañas -->
+      <svg class="block h-16 w-full sm:h-24 lg:h-32" viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true">
+        <path fill="#f0dfb6" d="M0 110 180 40l130 50 170-80 190 90 160-60 210 70 170-50 230 80v20H0z" />
+        <path fill="#e6c98a" opacity=".55" d="M0 135 140 85l170 40 150-60 200 65 170-40 190 55 190-45 230 60v15H0z" />
+        <path fill="#f8f0dc" d="M0 160v-15l220-25 200 25 240-30 220 30 210-20 350 20v15z" />
+      </svg>
+    </section>
+
+    <!-- ===================================================== -->
+    <!-- FEATURES                                               -->
+    <!-- ===================================================== -->
+    <section id="beneficios" aria-labelledby="features-title" class="bg-wheat-100 py-16 sm:py-24">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <header class="mx-auto mb-12 max-w-2xl text-center sm:mb-16">
+          <p class="mb-3 text-sm font-bold uppercase tracking-wider text-amber-700">Beneficios clave</p>
+          <h2 id="features-title" class="font-display text-3xl font-bold tracking-tight text-charcoal-900 sm:text-4xl">
+            Tres variables. Un horneado perfecto.
+          </h2>
+          <p class="mt-4 text-lg text-charcoal-600">
+            AtmoBake traduce la física del aire a ajustes concretos para tu receta.
+          </p>
+        </header>
+
+        <div class="grid gap-6 md:grid-cols-3">
+          <!-- Tarjeta 1: Hidratación -->
+          <article class="group flex flex-col rounded-3xl border border-wheat-200 bg-wheat-50 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-wheat-800/10 sm:p-8">
+            <div class="mb-6 grid h-14 w-14 place-items-center rounded-2xl bg-amber-100 text-amber-700 transition group-hover:bg-amber-600 group-hover:text-white">
+              <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z" />
+                <path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5" />
+              </svg>
+            </div>
+            <h3 class="font-display text-xl font-bold text-charcoal-900">Ajuste de hidratación por humedad</h3>
+            <p class="mt-3 flex-1 text-charcoal-600">
+              La harina absorbe agua del ambiente. AtmoBake corrige el líquido de tu masa según la humedad relativa
+              para que la textura sea siempre la misma, llueva o haga sol.
+            </p>
+            <div class="mt-6 rounded-2xl bg-white p-4" aria-hidden="true">
+              <div class="flex justify-between text-xs font-medium text-charcoal-500"><span>Seco</span><span>Húmedo</span></div>
+              <div class="mt-2 h-2 rounded-full bg-gradient-to-r from-wheat-300 via-amber-300 to-amber-600"></div>
+              <p class="mt-3 font-display text-2xl font-bold text-amber-700">±4% <span class="font-sans text-sm font-medium text-charcoal-500">de líquido</span></p>
+            </div>
+          </article>
+
+          <!-- Tarjeta 2: Levadura -->
+          <article class="group flex flex-col rounded-3xl border border-wheat-200 bg-wheat-50 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-wheat-800/10 sm:p-8">
+            <div class="mb-6 grid h-14 w-14 place-items-center rounded-2xl bg-amber-100 text-amber-700 transition group-hover:bg-amber-600 group-hover:text-white">
+              <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m3 20 6-10 4 6 3-4 5 8z" />
+                <circle cx="17" cy="6" r="2" />
+              </svg>
+            </div>
+            <h3 class="font-display text-xl font-bold text-charcoal-900">Modificación de levadura por altitud</h3>
+            <p class="mt-3 flex-1 text-charcoal-600">
+              En altura, la masa crece más rápido y luego se hunde. AtmoBake reduce la levadura y los leudantes
+              en proporción a tu altitud para lograr una miga estable y esponjosa.
+            </p>
+            <div class="mt-6 rounded-2xl bg-white p-4" aria-hidden="true">
+              <div class="flex justify-between text-xs font-medium text-charcoal-500"><span>0 m</span><span>3.500 m</span></div>
+              <div class="mt-2 h-2 overflow-hidden rounded-full bg-wheat-200">
+                <div class="h-full w-2/3 rounded-full bg-amber-600"></div>
+              </div>
+              <p class="mt-3 font-display text-2xl font-bold text-amber-700">hasta −33% <span class="font-sans text-sm font-medium text-charcoal-500">de levadura</span></p>
+            </div>
+          </article>
+
+          <!-- Tarjeta 3: Fermentación -->
+          <article class="group flex flex-col rounded-3xl border border-wheat-200 bg-wheat-50 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-wheat-800/10 sm:p-8">
+            <div class="mb-6 grid h-14 w-14 place-items-center rounded-2xl bg-amber-100 text-amber-700 transition group-hover:bg-amber-600 group-hover:text-white">
+              <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="13" r="8" />
+                <path d="M12 13l3.5-3.5" />
+                <path d="M12 5V3M8 3h8" />
+              </svg>
+            </div>
+            <h3 class="font-display text-xl font-bold text-charcoal-900">Control de fermentación por presión atmosférica</h3>
+            <p class="mt-3 flex-1 text-charcoal-600">
+              Con menos presión, los gases de la fermentación se expanden más. AtmoBake usa la presión barométrica,
+              incluida la del clima de ese día, para ajustar los tiempos de levado y de horneado.
+            </p>
+            <div class="mt-6 rounded-2xl bg-white p-4" aria-hidden="true">
+              <div class="flex justify-between text-xs font-medium text-charcoal-500"><span>1013 hPa</span><span>650 hPa</span></div>
+              <div class="mt-2 h-2 rounded-full bg-gradient-to-r from-charcoal-200 to-charcoal-800"></div>
+              <p class="mt-3 font-display text-2xl font-bold text-amber-700">×1,31 <span class="font-sans text-sm font-medium text-charcoal-500">de expansión en CDMX</span></p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== -->
+    <!-- DEMO INTERACTIVA                                       -->
+    <!-- ===================================================== -->
+    <section id="demo" aria-labelledby="demo-title" class="py-16 sm:py-24">
+      <div class="mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
+        <header class="text-center lg:text-left">
+          <p class="mb-3 text-sm font-bold uppercase tracking-wider text-amber-700">Demo interactiva</p>
+          <h2 id="demo-title" class="font-display text-3xl font-bold tracking-tight text-charcoal-900 sm:text-4xl">
+            Prueba AtmoBake ahora mismo.
+          </h2>
+          <p class="mt-4 text-lg text-charcoal-600">
+            Escribe la altitud de tu ciudad en metros y pulsa <strong class="text-charcoal-800">Ajustar Receta</strong>.
+            Te diremos al instante si tu masa necesita cambios.
+          </p>
+          <p class="mt-4 text-sm text-charcoal-500">
+            ¿No sabes tu altitud? Prueba con 2240 (Ciudad de México), 2640 (Bogotá) o 3640 (La Paz).
+          </p>
+        </header>
+
+        <!-- Simulación de app -->
+        <div class="mx-auto w-full max-w-sm">
+          <div class="rounded-[2.5rem] bg-charcoal-900 p-3 shadow-2xl shadow-charcoal-900/30">
+            <div class="min-h-[30rem] rounded-[2rem] bg-wheat-50 px-5 pb-6 pt-4">
+              <!-- Barra de estado -->
+              <div class="mb-6 flex items-center justify-between text-xs font-bold text-charcoal-700" aria-hidden="true">
+                <span>9:41</span>
+                <span class="h-5 w-24 rounded-full bg-charcoal-900"></span>
+                <span>100%</span>
+              </div>
+
+              <div class="mb-6 flex items-center gap-2">
+                <svg class="h-8 w-8" viewBox="0 0 64 64" aria-hidden="true">
+                  <rect width="64" height="64" rx="16" fill="#d97706" />
+                  <path d="M10 46 26 22l8 11 6-7 14 20z" fill="#fdfaf3" />
+                  <circle cx="46" cy="16" r="5" fill="#fde68a" />
+                </svg>
+                <span class="font-display text-lg font-bold text-charcoal-900">AtmoBake</span>
+              </div>
+
+              <form id="altForm" novalidate class="space-y-4">
+                <div>
+                  <label for="altitude" class="mb-2 block text-sm font-bold text-charcoal-700">Altitud (metros)</label>
+                  <div class="relative">
+                    <input id="altitude" name="altitude" type="number" min="0" max="9000" step="1"
+                           inputmode="numeric" placeholder="Ej. 2240" required
+                           aria-describedby="altHelp"
+                           class="w-full rounded-2xl border-2 border-wheat-200 bg-white px-4 py-3.5 pr-12 text-lg font-bold tabular-nums text-charcoal-900 placeholder:font-normal placeholder:text-charcoal-300 focus:border-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-500/20" />
+                    <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 font-bold text-charcoal-400" aria-hidden="true">m</span>
+                  </div>
+                  <p id="altHelp" class="mt-2 text-xs text-charcoal-500">Altitud sobre el nivel del mar.</p>
+                </div>
+
+                <button type="submit"
+                        class="w-full rounded-2xl bg-amber-600 px-4 py-3.5 text-lg font-bold text-white shadow-lg shadow-amber-600/25 transition hover:bg-amber-700 active:scale-[.98] focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-500/40">
+                  Ajustar Receta
+                </button>
+              </form>
+
+              <!-- Resultado dinámico -->
+              <div id="result" class="mt-6" aria-live="polite" aria-atomic="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================================================== -->
+  <!-- FOOTER                                                 -->
+  <!-- ===================================================== -->
+  <footer class="bg-charcoal-900 text-wheat-100">
+    <div class="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-10 text-center sm:px-6 md:flex-row md:justify-between md:text-left lg:px-8">
+      <a href="#" class="flex items-center gap-2 font-display text-lg font-bold text-wheat-50" aria-label="AtmoBake, volver arriba">
+        <svg class="h-8 w-8" viewBox="0 0 64 64" aria-hidden="true">
+          <rect width="64" height="64" rx="16" fill="#d97706" />
+          <path d="M10 46 26 22l8 11 6-7 14 20z" fill="#fdfaf3" />
+          <circle cx="46" cy="16" r="5" fill="#fde68a" />
+        </svg>
+        AtmoBake
+      </a>
+      <p class="flex items-center gap-2 text-wheat-200">
+        Desarrollado para la comunidad panadera
+        <span aria-hidden="true">🥖</span>
+      </p>
+      <p class="text-sm text-charcoal-400">© <span id="year"></span> AtmoBake</p>
+    </div>
+  </footer>
+
+  <!-- ===================================================== -->
+  <!-- JavaScript (Vanilla)                                   -->
+  <!-- ===================================================== -->
+  <script>
+    (function () {
+      "use strict";
+
+      const ALTITUDE_THRESHOLD = 1500; // metros
+      const fmt = new Intl.NumberFormat("es-ES");
+
+      /* ---------- Menú móvil ---------- */
+      const menuBtn = document.getElementById("menuBtn");
+      const nav = document.getElementById("mainNav");
+
+      function setMenu(open) {
+        nav.classList.toggle("hidden", !open);
+        menuBtn.setAttribute("aria-expanded", String(open));
+        menuBtn.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+      }
+      menuBtn.addEventListener("click", () => setMenu(nav.classList.contains("hidden")));
+      nav.addEventListener("click", (e) => {
+        if (e.target.closest("a") && window.innerWidth < 768) setMenu(false);
+      });
+
+      /* ---------- Demo: Ajustar Receta ---------- */
+      const form = document.getElementById("altForm");
+      const input = document.getElementById("altitude");
+      const result = document.getElementById("result");
+
+      const icons = {
+        warn: '<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>',
+        ok:   '<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
+        error:'<circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/>'
+      };
+
+      function icon(name) {
+        return `<svg class="h-6 w-6 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name]}</svg>`;
+      }
+
+      function render(html) {
+        // Forzamos que la animación se repita en cada envío
+        result.innerHTML = "";
+        requestAnimationFrame(() => { result.innerHTML = html; });
+      }
+
+      function showError(msg) {
+        input.setAttribute("aria-invalid", "true");
+        input.classList.add("border-red-400");
+        render(`
+          <div class="motion-safe:animate-pop flex gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-800">
+            ${icon("error")}
+            <p class="text-sm font-medium">${msg}</p>
+          </div>`);
+        input.focus();
+      }
+
+      function clearError() {
+        input.removeAttribute("aria-invalid");
+        input.classList.remove("border-red-400");
+      }
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const raw = input.value.trim();
+        const altitude = Number(raw);
+
+        if (raw === "" || Number.isNaN(altitude)) {
+          showError("Introduce tu altitud en metros para ajustar la receta.");
+          return;
+        }
+        if (altitude < 0 || altitude > 9000) {
+          showError("La altitud debe estar entre 0 y 9.000 metros.");
+          return;
+        }
+
+        clearError();
+        const altText = fmt.format(Math.round(altitude));
+
+        if (altitude > ALTITUDE_THRESHOLD) {
+          render(`
+            <article class="motion-safe:animate-pop rounded-2xl border border-amber-300 bg-amber-50 p-4 text-charcoal-800">
+              <header class="mb-3 flex items-center gap-2 text-amber-700">
+                ${icon("warn")}
+                <h3 class="font-bold">Gran altitud: ${altText} m</h3>
+              </header>
+              <p class="mb-3 text-sm">A esta altura, tu masa necesita estos ajustes:</p>
+              <ul class="space-y-2 text-sm">
+                <li class="flex items-center justify-between rounded-xl bg-white px-3 py-2.5">
+                  <span>Levadura</span>
+                  <span class="rounded-full bg-red-50 px-2.5 py-0.5 font-bold text-red-700">Reducir 20%</span>
+                </li>
+                <li class="flex items-center justify-between rounded-xl bg-white px-3 py-2.5">
+                  <span>Agua</span>
+                  <span class="rounded-full bg-emerald-50 px-2.5 py-0.5 font-bold text-emerald-700">Aumentar</span>
+                </li>
+              </ul>
+              <p class="mt-3 text-xs text-charcoal-500">El aire seco y el menor punto de ebullición evaporan más agua. Añade de 1 a 2 cucharadas por cada taza de líquido.</p>
+            </article>`);
+        } else {
+          render(`
+            <article class="motion-safe:animate-pop flex gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-900">
+              ${icon("ok")}
+              <div>
+                <h3 class="font-bold">${altText} m: ¡todo en orden!</h3>
+                <p class="mt-1 text-sm">Por debajo de ${fmt.format(ALTITUDE_THRESHOLD)} m tu receta no necesita ajustes importantes. Hornea con confianza.</p>
+              </div>
+            </article>`);
+        }
+      });
+
+      input.addEventListener("input", clearError);
+
+      /* ---------- Año del footer ---------- */
+      document.getElementById("year").textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
